@@ -12,7 +12,8 @@ class Tabuleiro (object):
 
     def __init__ (self, n = 4):
         ''' Cria um tabuleiro aleatorio de NxN '''
-        self.size = n**2
+        self.n = n
+        self.size = self.n**2
 
         l = [i for i in range(self.size)]
         random.shuffle(l)
