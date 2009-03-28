@@ -10,8 +10,8 @@ class Solver (object):
 
     def gera_filhos (self, nodo):
         # -> faz copias dos nodos
-        # -> aplica os movimentos as nodos (direita, esquerda,
-        # acima, abaixo).
+        # -> aplica os movimentos as nodos (right, left,
+        #    up, down)
         # -> Recalcula o peso do nodo.
         # -> Insere filhos na lista
         pass
