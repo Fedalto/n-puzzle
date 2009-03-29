@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 class heuristica(object):
+    """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
+    tabuleiro após uma jogada.
+    n -> tamanho do tabuleiro (assume-se que seja quadrático) """
     def __init__(self, n):
         self.n = n
         self.matriz_multi = self._gera_matriz_multi()
@@ -19,7 +22,9 @@ class heuristica(object):
 
     def calcula(self, tab, peso_pai=None, jogada=None):
         """ Calcula peso do tabuleiro inteiro ou a diferença dele
-            para uma jogada """
+            para uma jogada.
+            Recebe um tabuleiro. O peso do pai do tabuleiro deve ser
+            passado caso uma jogada seja passada também. """
 
         if jogada != None:
             tava = jogada.ondetava
