@@ -9,14 +9,12 @@ movimento = {'right' : (0,-1),
              'down' : (-1,0)}
 
 
-class nodo(object):
-    def __init__(self,tab,id_pai,peso,jogada_anterior,altura):
+class Nodo(object):
+    def __init__(self,tab, id, id_pai,peso,jogada,altura):
         self.tab = tab
+        self.id = id
         self.id_pai = id_pai
         self.peso = peso
         self.altura = altura
-        self.jogada_anterior = jogada_anterior
-
-    def copy (self):
-        pass
+        self.jogada = jogada
 
