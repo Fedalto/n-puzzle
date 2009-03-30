@@ -27,19 +27,19 @@ class heuristica(object):
             passado caso uma jogada seja passada também. """
 
         if jogada != None:
-            tava = jogada.ondetava
-            foi = jogada.ondefoi
-            valor = tab[foi[0],foi[1]]
+            tava = jogada['ondetava']
+            foi = jogada['ondefoi']
+            valor = tab[foi[0]][foi[1]]
             peso_velho = self._peso(valor,tava[0],tava[1])
             peso_novo = self._peso(valor,foi[0],foi[1])
-            return peso_pai - peso_velho-peso_novo
+            return peso_pai - (peso_velho - peso_novo)
 
         peso = 0
         for i in range(tab.n):
             for j in range(tab.n):
                 valor = tab[i][j]
                 dif_pos = self._peso(valor, i, j)
-                peso += dif_pos * self.matriz_multi[i][j]
+                peso += dif_pos * self.matriz_multi[self._lde(valor)][self._cde(valor)]
 
         return peso
 
