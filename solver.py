@@ -65,10 +65,6 @@ class Solver (object):
                              nodo.peso + delta +1, nome_mov, nodo.altura+1)
 
             self.adiciona_nodo(novo_nodo)
-            print novo_nodo.peso
-            print novo_nodo.tab
-            print
-
 
         # -> faz copias dos nodos
         # -> aplica os movimentos as nodos (right, left,
@@ -79,14 +75,8 @@ class Solver (object):
     def magic (self):
         nodo = self.prox_nodo()
         while nodo.peso - nodo.altura:
-###             print nodo.peso
-###             print nodo.tab
-###             print
             self.gera_filhos(nodo)
             nodo = self.prox_nodo()
-            self.gera_filhos(nodo)
-            import sys
-            sys.exit()
         self.print_solucao(nodo)
 
 
@@ -105,6 +95,7 @@ class Solver (object):
 
         solution.reverse()
 
-        print '\n\nSOLUCAO\n'
+        print '\nSOLUCAO\n'
         for step in solution:
             print step.tab
+            print
