@@ -32,14 +32,16 @@ class heuristica(object):
             valor = tab[foi[0]][foi[1]]
             peso_velho = self._peso(valor,tava[0],tava[1])
             peso_novo = self._peso(valor,foi[0],foi[1])
-            return peso_pai - (peso_velho - peso_novo)
+            mult = self.matriz_multi[self._lde(valor)][self._cde(valor)]
+            return (peso_novo - peso_velho)*mult
 
         peso = 0
         for i in range(tab.n):
             for j in range(tab.n):
                 valor = tab[i][j]
                 dif_pos = self._peso(valor, i, j)
-                peso += dif_pos * self.matriz_multi[self._lde(valor)][self._cde(valor)]
+                mult = self.matriz_multi[self._lde(valor)][self._cde(valor)]
+                peso += dif_pos*mult
 
         return peso
 
