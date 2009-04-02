@@ -1,0 +1,10 @@
++ Pensar em algo para substituir o esquema da ordenação da lista de nodos ou
+diminuir o tamanho da lista. Como está hoje fica lento.
+
++ Integrar a hash de tabelas com a hash de id dos pais (que tb tem o nodo do
+pai e sua tabela).
+
++ Permitir que o algoritmo cheque por outras possibilidades e melhores
+resultados, e não pare imediatamente no primeiro que encontrar.
+
++ Permitir que o usuário passe um arquivo contendo o tabuleiro inicial.
