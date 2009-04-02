@@ -50,11 +50,11 @@ class Solver (object):
             novo_tab = nodo.tab.copy()
             if not novo_tab.swap(mov):
                 continue
-            
+
             if str(novo_tab.get_tab()) in self.hash_tab:
                 continue
             self.hash_tab[hash(str(novo_tab.get_tab()))] = None
-            
+
             # Jogada INVERTIDA
             # Tudo e' relativo ao observador
             jogada = {'ondetava': novo_tab.zero_pos,
@@ -67,7 +67,7 @@ class Solver (object):
             self.adiciona_nodo(novo_nodo)
             print novo_nodo.peso
             print novo_nodo.tab
-            print 
+            print
 
 
         # -> faz copias dos nodos
@@ -81,7 +81,7 @@ class Solver (object):
         while nodo.peso - nodo.altura:
 ###             print nodo.peso
 ###             print nodo.tab
-###             print 
+###             print
             self.gera_filhos(nodo)
             nodo = self.prox_nodo()
             self.gera_filhos(nodo)
@@ -96,13 +96,13 @@ class Solver (object):
         # Aki faz tratamento de subida dos nodos, empilhamento dos movimentos
         # e impressao do resultado, alem do cafe.
         solution = []
-        
+
         while nodo.id_pai:
 
             solution.append(nodo)
             nodo = self.hash_pais[nodo.id_pai]
         solution.append(nodo)
-        
+
         solution.reverse()
 
         print '\n\nSOLUCAO\n'
