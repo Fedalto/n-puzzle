@@ -81,9 +81,10 @@ class Solver (object):
             if not novo_tab.swap(mov):
                 continue
 
-            if str(novo_tab.get_tab()) in self.hash_tab:
+            htab = hash(str(novo_tab.get_tab()))
+            if htab in self.hash_tab:
                 continue
-            self.hash_tab[hash(str(novo_tab.get_tab()))] = None
+            self.hash_tab[htab] = None
 
             # Jogada INVERTIDA
             # Tudo e' relativo ao observador
