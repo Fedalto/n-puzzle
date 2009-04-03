@@ -1,13 +1,14 @@
 #!/bin/env python
-
+# -*- coding:utf-8 -*-
 
 # Python library
 import random
 import copy
+from nodo import movimento
 
 class Tabuleiro (object):
     ''' Classe que representa o tabuleiro.
-    E' implementado como uma lista de listas. 
+    E' implementado como uma lista de listas.
     O elemento com valor igual a 0 (zero)
     representa o espaco em vazio.'''
 
@@ -46,24 +47,29 @@ class Tabuleiro (object):
         self.__tab[a + x][b + y] = 0
         self.zero_pos = (a + x, b + y)
         return True #?
-    
+
     def get_tab(self):
         return self.__tab
 
     def copy (self):
         return copy.deepcopy(self)
 
-def random_tab (n = 4):
-    ''' Cria um tabuleiro aleatorio de NxN '''
+def random_tab (n=4, n_of_mov=10):
+    ''' Cria um tabuleiro resolvível aleatorio de NxN elementos e
+        no máximo n_of_mov movimentos '''
     size = n**2
-    l = [i for i in range(size)]
-    random.shuffle(l)
+    l = [i for i in range(1,size)]
+    l.append(0)
 
     tab = []
     for i in range(0,size, n):
-        tab.append( l[i:i+n] )
+        tab.append(l[i:i+n])
 
-    return Tabuleiro(tab)
+    tab = Tabuleiro(tab)
+    for i in range(n_of_mov):
+        tab.swap(random.choice(movimento.values()))
+
+    return tab
 
 
 def main ():
