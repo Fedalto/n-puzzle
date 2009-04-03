@@ -40,14 +40,18 @@ class Tabuleiro (object):
         # Retorna (linha,coluna) do elemento 0
         return (self.__tab.index(line), line.index(num))
 
-    def swap (self, (x, y) ):
+    def swap_test(self, (x,y)) :
         a, b = self.zero_pos
         if a+x < 0 or b+y < 0 or a+x > self.n-1 or b+y > self.n-1:
             return False
+        else:
+            return True
+
+    def swap (self, (x, y) ):
+        a, b = self.zero_pos
         self.__tab[a][b] = self.__tab[a+x][b+y]
         self.__tab[a + x][b + y] = 0
         self.zero_pos = (a + x, b + y)
-        return True
 
     def get_tab(self):
         return self.__tab
@@ -71,7 +75,9 @@ def random_tab (n=4, n_of_mov=10):
 
     tab = Tabuleiro(tab)
     for i in range(n_of_mov):
-        tab.swap(random.choice(movimento.values()))
+        mov = random.choice(movimento.values())
+        if tab.swap_test(mov):
+            tab.swap(mov)
 
     return tab
 

@@ -77,9 +77,11 @@ class Solver (object):
         # -> Insere filhos na lista
 
         for nome_mov, mov in movimento.items():
-            novo_tab = nodo.tab.copy()
-            if not novo_tab.swap(mov):
+            if not nodo.tab.swap_test(mov):
                 continue
+            else:
+                novo_tab = nodo.tab.copy()
+                novo_tab.swap(mov)
 
             htab = hash(str(novo_tab.get_tab()))
             if htab in self.hash_tab:
