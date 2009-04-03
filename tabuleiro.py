@@ -50,7 +50,9 @@ class Tabuleiro (object):
         return self.__tab
 
     def copy (self):
-        return copy.deepcopy(self)
+        #return copy.deepcopy(self)
+        #return Tabuleiro(copy.deepcopy(self.get_tab()))
+        return Tabuleiro([ i[:] for i in self.get_tab() ])
 
 def random_tab (n=4, n_of_mov=10):
     ''' Cria um tabuleiro resolvível aleatorio de NxN elementos e
