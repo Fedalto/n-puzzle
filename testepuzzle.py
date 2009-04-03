@@ -4,9 +4,10 @@ from solver import Solver
 from tabuleiro import Tabuleiro,random_tab
 import cProfile
 
-tab_teste = [[6, 5, 2, 3],[0, 1, 8, 4],[9, 10, 7, 11],[13, 14, 15, 12]]
-#tab_teste = random_tab(4,50).get_tab()
+tam_tabuleiro = 8
+#tab_teste = [[5, 14, 10, 9], [6, 8, 15, 2], [11, 13, 4, 7], [0, 12, 1, 3]]
+tab_teste = random_tab(tam_tabuleiro,100).get_tab()
 
-s = Solver(n=4,tabini=tab_teste)
+s = Solver(n=tam_tabuleiro,tabini=tab_teste)
 
 cProfile.run('s.magic()')
