@@ -39,14 +39,12 @@ class Tabuleiro (object):
 
     def swap (self, (x, y) ):
         a, b = self.zero_pos
-#         print a, b, x, y
         if a+x < 0 or b+y < 0 or a+x > self.n-1 or b+y > self.n-1:
-#            print a, b, x, y
             return None
         self.__tab[a][b] = self.__tab[a+x][b+y]
         self.__tab[a + x][b + y] = 0
         self.zero_pos = (a + x, b + y)
-        return True #?
+        return True
 
     def get_tab(self):
         return self.__tab
