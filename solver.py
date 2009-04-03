@@ -46,6 +46,12 @@ class Solver (object):
         return self.lista_nodos.pop(0)[1]
 
     def gera_filhos (self, nodo):
+        # -> faz copias dos nodos
+        # -> aplica os movimentos as nodos (right, left,
+        #    up, down)
+        # -> Recalcula o peso do nodo.
+        # -> Insere filhos na lista
+
         for nome_mov, mov in movimento.items():
             novo_tab = nodo.tab.copy()
             if not novo_tab.swap(mov):
@@ -66,13 +72,8 @@ class Solver (object):
 
             self.adiciona_nodo(novo_nodo)
 
-        # -> faz copias dos nodos
-        # -> aplica os movimentos as nodos (right, left,
-        #    up, down)
-        # -> Recalcula o peso do nodo.
-        # -> Insere filhos na lista
-
     def magic (self):
+        """ You want some magic??? Resolve tudo... """
         nodo = self.prox_nodo()
         while nodo.peso - nodo.altura:
             self.gera_filhos(nodo)
@@ -88,7 +89,6 @@ class Solver (object):
         solution = []
 
         while nodo.id_pai:
-
             solution.append(nodo)
             nodo = self.hash_pais[nodo.id_pai]
         solution.append(nodo)
