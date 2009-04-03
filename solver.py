@@ -12,6 +12,7 @@ class Solver (object):
         self.n = n
         self.hash_pais = {}
         self.hash_tab = {}
+        self.hash_nodos = {}
 
         # Se usuário não forçou um tabuleiro inicial, cria um aleatório
         if not tabini:
@@ -35,24 +36,38 @@ class Solver (object):
     def adiciona_nodo(self, nodo):
         """ Cada item da lista possui [peso,nodo] """
 
-        self.lista_nodos.append([nodo.peso,nodo])
-        self.ordena_lista_nodos()
-        #self.insere_ordenado(nodo)
+        #self.lista_nodos.append([nodo.peso,nodo])
+        if self.hash_nodos.has_key(nodo.peso):
+            self.hash_nodos[nodo.peso].append(nodo)
+        else:
+            self.hash_nodos[nodo.peso] = [nodo]
+
+        if nodo.peso not in self.lista_nodos:
+            self.lista_nodos.append(nodo.peso)
+            self.ordena_lista_nodos()
+            #self.insere_ordenado(nodo.peso)
+
         self.hash_pais[nodo.id] = nodo
 
-    def insere_ordenado(self,nodo):
+    def insere_ordenado(self,peso):
         for i, v in enumerate(self.lista_nodos):
-            if nodo.peso <= v[0]:
-                self.lista_nodos.insert(i,[nodo.peso,nodo])
+            if peso <= v:
+                self.lista_nodos.insert(i,peso)
                 break
         else:
-            self.lista_nodos.append([nodo.peso,nodo])
+            self.lista_nodos.append(peso)
 
     def ordena_lista_nodos(self):
-        self.lista_nodos.sort(cmp=lambda x,y: x[0] - y[0])
+        self.lista_nodos.sort()
+
+    def _cmp_nodos(self,x,y):
+        return x[0]-y[0]
 
     def prox_nodo (self):
-        return self.lista_nodos.pop(0)[1]
+        idx = self.lista_nodos[0]
+        todosnodos = self.hash_nodos[idx]
+        if len(todosnodos) == 1: del self.lista_nodos[0]
+        return todosnodos.pop(0)
 
     def gera_filhos (self, nodo):
         # -> faz copias dos nodos
