@@ -36,8 +36,17 @@ class Solver (object):
         """ Cada item da lista possui [peso,nodo] """
 
         self.lista_nodos.append([nodo.peso,nodo])
-        self.hash_pais[nodo.id] = nodo
         self.ordena_lista_nodos()
+        #self.insere_ordenado(nodo)
+        self.hash_pais[nodo.id] = nodo
+
+    def insere_ordenado(self,nodo):
+        for i, v in enumerate(self.lista_nodos):
+            if nodo.peso <= v[0]:
+                self.lista_nodos.insert(i,[nodo.peso,nodo])
+                break
+        else:
+            self.lista_nodos.append([nodo.peso,nodo])
 
     def ordena_lista_nodos(self):
         self.lista_nodos.sort(cmp=lambda x,y: x[0] - y[0])
