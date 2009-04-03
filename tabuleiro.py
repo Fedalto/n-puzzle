@@ -12,13 +12,16 @@ class Tabuleiro (object):
     O elemento com valor igual a 0 (zero)
     representa o espaco em vazio.'''
 
-    def __init__ (self, lista):
+    def __init__ (self, lista,zero_pos=None):
         ''' Recebe uma lista de listas e
         retorna um objeto Tabuleiro. '''
         self.n = len(lista)
         self.size = self.n**2
         self.__tab = lista
-        self.zero_pos = self.find(0)
+        if not zero_pos:
+            self.zero_pos = self.find(0)
+        else:
+            self.zero_pos = zero_pos
 
     def __str__ (self):
         s = ''
@@ -52,7 +55,7 @@ class Tabuleiro (object):
     def copy (self):
         #return copy.deepcopy(self)
         #return Tabuleiro(copy.deepcopy(self.get_tab()))
-        return Tabuleiro([ i[:] for i in self.get_tab() ])
+        return Tabuleiro([i[:] for i in self.get_tab()],self.zero_pos)
 
 def random_tab (n=4, n_of_mov=10):
     ''' Cria um tabuleiro resolvível aleatorio de NxN elementos e
