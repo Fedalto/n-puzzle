@@ -124,3 +124,5 @@ class Solver (object):
         for step in solution:
             print step.tab
             print
+        print "Número de movimentos necessários =",len(solution)
+
