@@ -111,6 +111,8 @@ class Solver (object):
         #
         # Aki faz tratamento de subida dos nodos, empilhamento dos movimentos
         # e impressao do resultado, alem do cafe.
+        print "Construindo solução..."
+
         solution = []
 
         while nodo.id_pai:
