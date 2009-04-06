@@ -1,5 +1,4 @@
-+ Pensar em algo para substituir o esquema da ordenação da lista de nodos ou
-diminuir o tamanho da lista. PRIORIDADE MÁXIMA.
++ Verificar altura do nodo na substituição de tabuleiros em hash_tab
 
 + Integrar a hash de tabelas com a hash de id dos pais (que tb tem o nodo do
 pai e sua tabela).
