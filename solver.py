@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import tabuleiro
+import tabuleiro, sys
 from heuristica import heuristica
 from nodo import Nodo, movimento
 
@@ -95,7 +95,8 @@ class Solver (object):
 
             delta = self.heuristica.calcula(novo_tab, nodo.peso, jogada)
             novo_nodo = Nodo(novo_tab, len(self.hash_pais) ,nodo.id,
-                             nodo.peso + delta +1, nome_mov, nodo.altura+1)
+                    (nodo.peso + delta)+nodo.tab.n/2, nome_mov,
+                    nodo.altura+nodo.tab.n/2)
 
             self.adiciona_nodo(novo_nodo)
 
