@@ -79,6 +79,9 @@ def random_tab (n=4, n_of_mov=10):
         if tab.swap_test(mov):
             tab.swap(mov)
 
+    print "Tabuleiro inicial:"
+    print tab
+    print "\n"
     return tab
 
 
