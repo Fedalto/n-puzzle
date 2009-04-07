@@ -7,3 +7,5 @@ pai e sua tabela).
 resultados, e não pare imediatamente no primeiro que encontrar.
 
 + Permitir que o usuário passe um arquivo contendo o tabuleiro inicial.
+
++ Acrescentar teste de desempate para heuristica manhattan
