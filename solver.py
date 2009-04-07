@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import tabuleiro, sys
-from heuristica import heuristica
+from heuristica import cebola,manhattan
 from nodo import Nodo, movimento
 
 class Solver (object):
-    def __init__(self, n=3, tabini=None):
+    def __init__(self, n=3, tabini=None,heuristica=cebola):
         self.heuristica = heuristica(n)
         self.lista_nodos = []
         self.n = n
@@ -93,10 +93,16 @@ class Solver (object):
             jogada = {'ondetava': novo_tab.zero_pos,
                       'ondefoi' : nodo.tab.zero_pos }
 
+            incaltura = 1
+            #incaltura = nodo.tab.n/2
+
             delta = self.heuristica.calcula(novo_tab, nodo.peso, jogada)
             novo_nodo = Nodo(novo_tab, len(self.hash_pais) ,nodo.id,
-                    (nodo.peso + delta)+nodo.tab.n/2, nome_mov,
-                    nodo.altura+nodo.tab.n/2)
+                    (nodo.peso + delta)+incaltura, nome_mov,
+                    nodo.altura+incaltura)
+
+            print novo_nodo.peso, novo_nodo.altura
+            print novo_nodo.tab
 
             self.adiciona_nodo(novo_nodo)
 

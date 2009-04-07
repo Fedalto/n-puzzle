@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from solver import Solver
+from heuristica import manhattan,cebola
 from tabuleiro import Tabuleiro,random_tab
 import cProfile
 
@@ -17,8 +18,9 @@ tam_tabuleiro = 3
              [49, 59, 60, 51, 53, 54,63, 48],
              [57, 58, 52, 43, 61, 62, 56, 55]]
 """
-tab_teste = random_tab(tam_tabuleiro,tam_tabuleiro**10).get_tab()
+tab_teste = random_tab(tam_tabuleiro,tam_tabuleiro**3).get_tab()
 
-s = Solver(n=tam_tabuleiro,tabini=tab_teste)
+s = Solver(n=tam_tabuleiro,tabini=tab_teste,heuristica=manhattan)
 
 cProfile.run('s.magic()')
+#s.magic()
