@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-class heuristica(object):
+class cebola(object):
     """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
     tabuleiro após uma jogada.
     n -> tamanho do tabuleiro (assume-se que seja quadrático) """
@@ -70,3 +70,44 @@ class heuristica(object):
         #        cont +=1
 
         return tab_multi
+
+class manhattan(object):
+    """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
+    tabuleiro após uma jogada.
+    n -> tamanho do tabuleiro (assume-se que seja quadrático) """
+    def __init__(self, n):
+        self.n = n
+
+    def _lde(self, x):
+        """ Linha que X deveria estar """
+        return (x-1)/self.n
+
+    def _cde(self, x):
+        """ Coluna que X deveria estar """
+        return (x-1)%self.n
+
+    def _peso(self, x, i, j):
+        return abs(self._lde(x) - i) + abs(self._cde(x) - j)
+
+    def calcula(self, tab, peso_pai=None, jogada=None):
+        """ Calcula peso do tabuleiro inteiro ou a diferença dele
+            para uma jogada.
+            Recebe um tabuleiro. O peso do pai do tabuleiro deve ser
+            passado caso uma jogada seja passada também. """
+
+        if jogada != None:
+            tava = jogada['ondetava']
+            foi = jogada['ondefoi']
+            valor = tab[foi[0]][foi[1]]
+            peso_velho = self._peso(valor,tava[0],tava[1])
+            peso_novo = self._peso(valor,foi[0],foi[1])
+            return (peso_novo - peso_velho)
+
+        peso = 0
+        for i in range(tab.n):
+            for j in range(tab.n):
+                valor = tab[i][j]
+                dif_pos = self._peso(valor, i, j)
+                peso += dif_pos
+
+        return peso
