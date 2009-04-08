@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-class cebola(object):
-    """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
-    tabuleiro após uma jogada.
-    n -> tamanho do tabuleiro (assume-se que seja quadrático) """
-    def __init__(self, n):
+class Heuristica (object):
+    """ Classe base de heurísticas. """
+
+    def __init__ (self, n):
         self.n = n
-        self.matriz_multi = self._gera_matriz_multi()
 
     def _lde(self, x):
         """ Linha que X deveria estar """
@@ -19,6 +17,19 @@ class cebola(object):
 
     def _peso(self, x, i, j):
         return abs(self._lde(x) - i) + abs(self._cde(x) - j)
+
+    def calcula (self, *args, **kwds):
+        raise Exception("OPS!")
+
+
+class cebola(Heuristica):
+    """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
+    tabuleiro após uma jogada.
+    n -> tamanho do tabuleiro (assume-se que seja quadrático) """
+    def __init__(self, n):
+        Heuristica.__init__(self, n)
+        self.matriz_multi = self._gera_matriz_multi()
+
 
     def calcula(self, tab, peso_pai=None, jogada=None):
         """ Calcula peso do tabuleiro inteiro ou a diferença dele
@@ -71,23 +82,12 @@ class cebola(object):
 
         return tab_multi
 
-class manhattan(object):
+class manhattan(Heuristica):
     """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
     tabuleiro após uma jogada.
     n -> tamanho do tabuleiro (assume-se que seja quadrático) """
     def __init__(self, n):
-        self.n = n
-
-    def _lde(self, x):
-        """ Linha que X deveria estar """
-        return (x-1)/self.n
-
-    def _cde(self, x):
-        """ Coluna que X deveria estar """
-        return (x-1)%self.n
-
-    def _peso(self, x, i, j):
-        return abs(self._lde(x) - i) + abs(self._cde(x) - j)
+        Heuristica.__init__(self,n)
 
     def calcula(self, tab, peso_pai=None, jogada=None):
         """ Calcula peso do tabuleiro inteiro ou a diferença dele
