@@ -9,17 +9,22 @@ class Heuristica (object):
 
     def _lde(self, x):
         """ Linha que X deveria estar """
-        return (x-1)/self.n
+        return x==0 and self.n-1 or (x-1)/self.n
 
     def _cde(self, x):
         """ Coluna que X deveria estar """
-        return (x-1)%self.n
+        return x==0 and self.n-1 or (x-1)%self.n
+
 
     def _peso(self, x, i, j):
-        return abs(self._lde(x) - i) + abs(self._cde(x) - j)
+        if x ==0: return 0
+        else: return abs(self._lde(x) - i) + abs(self._cde(x) - j)
 
     def calcula (self, *args, **kwds):
         raise Exception("OPS!")
+
+    def terminou(self,nodo):
+        return nodo.peso - nodo.altura
 
 
 class cebola(Heuristica):
@@ -29,7 +34,6 @@ class cebola(Heuristica):
     def __init__(self, n):
         Heuristica.__init__(self, n)
         self.matriz_multi = self._gera_matriz_multi()
-
 
     def calcula(self, tab, peso_pai=None, jogada=None):
         """ Calcula peso do tabuleiro inteiro ou a diferença dele
@@ -69,6 +73,54 @@ class cebola(Heuristica):
             cont -= 1
 
         return tab_multi
+
+class cebola_com_somadora(cebola):
+
+    def __init__(self,n):
+        cebola.__init__(self,n)
+        self.max_heuristica = self._max_heuri()
+
+    def _max_heuri(self):
+        count = 0
+        for i in self.matriz_multi:
+            for j in i:
+                count += j
+        return count
+
+    def calcula(self, tab, peso_pai=None, jogada=None):
+        """ Calcula peso do tabuleiro inteiro ou a diferença dele
+            para uma jogada.
+            Recebe um tabuleiro. O peso do pai do tabuleiro deve ser
+            passado caso uma jogada seja passada também. """
+
+        if jogada != None:
+            tava = jogada['ondetava']
+            foi = jogada['ondefoi']
+            valor = tab[foi[0]][foi[1]]
+            valort = tab[tava[0]][tava[1]]
+
+            mult = self.matriz_multi[self._lde(valor)][self._cde(valor)]
+            multtava = self.matriz_multi[self._lde(valort)][self._cde(valort)]
+
+            peso_velho = self._peso(valor,tava[0],tava[1])+multtava
+            peso_novo = self._peso(valor,foi[0],foi[1])+mult
+            print 'deltanovo,deltavelho,multi,resultado'
+            print peso_novo,peso_velho,mult,peso_novo-peso_velho
+            return peso_novo - peso_velho
+
+        peso = 0
+        for i in range(tab.n):
+            for j in range(tab.n):
+                valor = tab[i][j]
+                dif_pos = self._peso(valor, i, j)
+                mult = self.matriz_multi[self._lde(valor)][self._cde(valor)]
+                peso += dif_pos+mult
+
+        print 'peso(tab inicial): ',peso
+        return peso
+
+    def terminou(self,nodo):
+        return nodo.peso - nodo.altura - self.max_heuristica
 
 class layers (cebola):
     """ Heuristica que prioriza as primeiras linhas. """
