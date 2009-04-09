@@ -25,9 +25,11 @@ class Tabuleiro (object):
 
     def __str__ (self):
         s = ''
-        for line in self.__tab:
-            s += str(line) + '\n'
-        return s.rstrip()
+        for i in range(self.n):
+            for j in range(self.n):
+                s += '| %2d ' % self[i][j]
+            s += '|\n'
+        return s
 
     def __getitem__ (self, item):
         return self.__tab.__getitem__(item)
@@ -40,7 +42,7 @@ class Tabuleiro (object):
         # Retorna (linha,coluna) do elemento 0
         return (self.__tab.index(line), line.index(num))
 
-    def swap_test(self, (x,y)) :
+    def swap_test(self, (x,y)):
         a, b = self.zero_pos
         if a+x < 0 or b+y < 0 or a+x > self.n-1 or b+y > self.n-1:
             return False
@@ -82,6 +84,7 @@ def random_tab (n=4, n_of_mov=10):
     print "Tabuleiro inicial:"
     print tab
     print "\n"
+
     return tab
 
 
