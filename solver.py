@@ -8,7 +8,7 @@ from nodo import Nodo, movimento
 class Solver (object):
     def __init__(self, n=3, tabini=None,heuristica=cebola):
         self.heuristica = heuristica(n)
-        self.lista_nodos = []
+        self.lista_pesos = []
         self.n = n
         self.hash_pais = {}
         self.hash_tab = {}
@@ -42,9 +42,9 @@ class Solver (object):
         else:
             self.hash_nodos[nodo.peso] = [nodo]
 
-        if nodo.peso not in self.lista_nodos:
-            self.lista_nodos.append(nodo.peso)
-            self.ordena_lista_nodos()
+        if nodo.peso not in self.lista_pesos:
+            self.lista_pesos.append(nodo.peso)
+            self.ordena_lista_pesos()
             #self.insere_ordenado(nodo.peso)
 
         self.hash_pais[nodo.id] = nodo
@@ -57,16 +57,16 @@ class Solver (object):
         else:
             self.lista_nodos.append(peso)
 
-    def ordena_lista_nodos(self):
-        self.lista_nodos.sort()
+    def ordena_lista_pesos(self):
+        self.lista_pesos.sort()
 
     def _cmp_nodos(self,x,y):
         return x[0]-y[0]
 
     def prox_nodo (self):
-        idx = self.lista_nodos[0]
+        idx = self.lista_pesos[0]
         todosnodos = self.hash_nodos[idx]
-        if len(todosnodos) == 1: del self.lista_nodos[0]
+        if len(todosnodos) == 1: del self.lista_pesos[0]
         return todosnodos.pop(0)
 
     def gera_filhos (self, nodo):
@@ -101,8 +101,8 @@ class Solver (object):
                     (nodo.peso + delta)+incaltura, nome_mov,
                     nodo.altura+incaltura)
 
-            print novo_nodo.peso, novo_nodo.altura
-            print novo_nodo.tab
+#             print novo_nodo.peso, novo_nodo.altura
+#             print novo_nodo.tab
 
             self.adiciona_nodo(novo_nodo)
 
