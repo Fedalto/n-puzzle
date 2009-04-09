@@ -93,25 +93,27 @@ class Solver (object):
             jogada = {'ondetava': novo_tab.zero_pos,
                       'ondefoi' : nodo.tab.zero_pos }
 
-            #incaltura = 1
-            incaltura = nodo.tab.n/2
+            incaltura = 1
+            #incaltura = nodo.tab.n/2
 
             delta = self.heuristica.calcula(novo_tab, nodo.peso, jogada)
             novo_nodo = Nodo(novo_tab, len(self.hash_pais) ,nodo.id,
                     (nodo.peso + delta)+incaltura, nome_mov,
                     nodo.altura+incaltura)
 
-#             print novo_nodo.peso, novo_nodo.altura
-#             print novo_nodo.tab
+#            print novo_nodo.peso,novo_nodo.altura,self.heuristica.terminou(novo_nodo)
+#            print novo_nodo.tab
 
             self.adiciona_nodo(novo_nodo)
 
     def magic (self):
         """ You want some magic??? Resolve tudo... """
         nodo = self.prox_nodo()
-        while nodo.peso - nodo.altura:
+        while self.heuristica.terminou(nodo):
             self.gera_filhos(nodo)
             nodo = self.prox_nodo()
+#            self.gera_filhos(nodo)
+#            sys.exit(0)
         self.print_solucao(nodo)
 
 
