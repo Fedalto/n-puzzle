@@ -27,7 +27,11 @@ class Tabuleiro (object):
         s = ''
         for i in range(self.n):
             for j in range(self.n):
-                s += '| %2d ' % self[i][j]
+                digit = self[i][j]
+                if digit == 0:
+                    s+= "| \033[31m%2d\033[0;0m " % digit
+                else:
+                    s += '| %2d ' % self[i][j]
             s += '|\n'
         return s
 
