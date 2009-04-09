@@ -82,6 +82,21 @@ class cebola(Heuristica):
 
         return tab_multi
 
+class layers (cebola):
+    """ Heuristica que prioriza as primeiras linhas. """
+    def _gera_matriz_multi(self):
+        """ Funciona como a heuristica cebola.  Mas a matriz
+        multiplicadora é formada sendo que a linha i tem valor igual a
+        n-i.  A posição do espaço vazio (elemento 0) tem valor igual
+        azero (0)"""
+
+        n = self.n
+
+        tab_multi = [[i]*n for i in range(n,0,-1)]
+        tab_multi[-1][-1] = 0
+
+        return tab_multi
+
 class manhattan(Heuristica):
     """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
     tabuleiro após uma jogada.
