@@ -56,11 +56,6 @@ class cebola(Heuristica):
 
         return peso
 
-    def _h(self,x):
-        n = self.n
-        if x <= n: return n-1
-        else: return (n-1)-((x-1)%n)
-
     def _gera_matriz_multi(self):
         n = self.n
         tab_multi = [[None]*n for i in range(n)]
@@ -72,13 +67,6 @@ class cebola(Heuristica):
                 tab_multi[i][j] = cont
                 tab_multi[j][i] = cont
             cont -= 1
-
-        # ULYSSES
-        #cont = 1
-        #for i in range(n):
-        #    for j in range(n):
-        #        tab_multi[i][j] = self._h(cont)
-        #        cont +=1
 
         return tab_multi
 
