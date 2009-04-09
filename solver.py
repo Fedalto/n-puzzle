@@ -93,8 +93,8 @@ class Solver (object):
             jogada = {'ondetava': novo_tab.zero_pos,
                       'ondefoi' : nodo.tab.zero_pos }
 
-            incaltura = 1
-            #incaltura = nodo.tab.n/2
+            #incaltura = 1
+            incaltura = nodo.tab.n/2
 
             delta = self.heuristica.calcula(novo_tab, nodo.peso, jogada)
             novo_nodo = Nodo(novo_tab, len(self.hash_pais) ,nodo.id,
