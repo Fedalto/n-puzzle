@@ -23,7 +23,7 @@ class Solver (object):
         peso = self.heuristica.calcula(tabini)
 
         # Adiciona o tabuleiro na lista de hashs
-        self.hash_tab[hash(str(tabini.get_tab()))] = None
+        self.hash_tab[hash(str(tabini.get_tab()))] = 0
 
         # Cria um nodo
         nodoini = Nodo(tabini, None, peso, None, 0)
@@ -81,9 +81,9 @@ class Solver (object):
                 novo_tab.swap(mov)
 
             htab = hash(str(novo_tab.get_tab()))
-            if htab in self.hash_tab:
+            if htab in self.hash_tab and self.hash_tab[htab] < nodo.altura+1:
                 continue
-            self.hash_tab[htab] = None
+            self.hash_tab[htab] = nodo.altura+1 # Altura do pai +1
 
             # Jogada INVERTIDA
             # Tudo e' relativo ao observador
