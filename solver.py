@@ -10,7 +10,6 @@ class Solver (object):
         self.heuristica = heuristica(n)
         self.lista_pesos = []
         self.n = n
-        self.hash_pais = {}
         self.hash_tab = {}
         self.hash_nodos = {}
 
@@ -27,8 +26,7 @@ class Solver (object):
         self.hash_tab[hash(str(tabini.get_tab()))] = None
 
         # Cria um nodo
-        nodoini = Nodo(tabini, 0, None,peso,None,0)
-        self.hash_pais[0] = nodoini
+        nodoini = Nodo(tabini, None, peso, None, 0)
 
         # Adiciona nodo a lista de nodos
         self.adiciona_nodo(nodoini)
@@ -47,7 +45,6 @@ class Solver (object):
             self.ordena_lista_pesos()
             #self.insere_ordenado(nodo.peso)
 
-        self.hash_pais[nodo.id] = nodo
 
     def insere_ordenado(self,peso):
         for i, v in enumerate(self.lista_nodos):
@@ -97,9 +94,8 @@ class Solver (object):
             #incaltura = nodo.tab.n/2
 
             delta = self.heuristica.calcula(novo_tab, nodo.peso, jogada)
-            novo_nodo = Nodo(novo_tab, len(self.hash_pais) ,nodo.id,
-                    (nodo.peso + delta)+incaltura, nome_mov,
-                    nodo.altura+incaltura)
+            novo_nodo = Nodo(novo_tab, nodo, (nodo.peso + delta)+incaltura,
+                             nome_mov, nodo.altura+incaltura)
 
 #            print novo_nodo.peso,novo_nodo.altura,self.heuristica.terminou(novo_nodo)
 #            print novo_nodo.tab
@@ -126,9 +122,9 @@ class Solver (object):
 
         solution = []
 
-        while nodo.id_pai:
+        while nodo.pai:
             solution.append(nodo)
-            nodo = self.hash_pais[nodo.id_pai]
+            nodo = nodo.pai
         solution.append(nodo)
 
         solution.reverse()

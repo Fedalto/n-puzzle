@@ -10,10 +10,9 @@ movimento = {'right' : (0,-1),
 
 
 class Nodo(object):
-    def __init__(self,tab, id, id_pai,peso,jogada,altura):
+    def __init__(self, tab, pai, peso, jogada, altura):
         self.tab = tab
-        self.id = id
-        self.id_pai = id_pai
+        self.pai = pai
         self.peso = peso
         self.altura = altura
         self.jogada = jogada
