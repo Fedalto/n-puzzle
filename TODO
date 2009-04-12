@@ -1,11 +1,8 @@
-+ Verificar altura do nodo na substituição de tabuleiros em hash_tab
-
-+ Integrar a hash de tabelas com a hash de id dos pais (que tb tem o nodo do
-pai e sua tabela).
-
 + Permitir que o algoritmo cheque por outras possibilidades e melhores
 resultados, e não pare imediatamente no primeiro que encontrar.
 
 + Permitir que o usuário passe um arquivo contendo o tabuleiro inicial.
 
-+ Acrescentar teste de desempate para heuristica manhattan
++ Acrescentar teste de desempate para heuristica manhattan.
+
++ Pq o manhattan não resolve problemas de ordem 4x4?
