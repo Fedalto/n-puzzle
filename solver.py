@@ -97,9 +97,6 @@ class Solver (object):
             novo_nodo = Nodo(novo_tab, nodo, (nodo.peso + delta)+incaltura,
                              nome_mov, nodo.altura+incaltura)
 
-#            print novo_nodo.peso,novo_nodo.altura,self.heuristica.terminou(novo_nodo)
-#            print novo_nodo.tab
-
             self.adiciona_nodo(novo_nodo)
 
     def magic (self):
@@ -108,10 +105,19 @@ class Solver (object):
         while self.heuristica.terminou(nodo):
             self.gera_filhos(nodo)
             nodo = self.prox_nodo()
-#            self.gera_filhos(nodo)
-#            sys.exit(0)
-        self.print_solucao(nodo)
+        return self.get_solucao(nodo)
 
+    def get_solucao(self,nodo):
+        solution = []
+
+        while nodo.pai:
+            solution.append(nodo)
+            nodo = nodo.pai
+        solution.append(nodo)
+
+        solution.reverse()
+
+        return (len(solution),solution)
 
     def print_solucao (self, nodo):
         ###

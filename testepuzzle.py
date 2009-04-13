@@ -1,26 +1,46 @@
 #!/usr/bin/env python
 
 from solver import Solver
-from heuristica import manhattan,cebola
+from heuristica import *
 from tabuleiro import Tabuleiro,random_tab
-import cProfile
+import cProfile, resource, sys, time
 
-tam_tabuleiro = 3
-#tab_teste = [[5, 0, 2, 8],[13, 11, 1, 6],
-#                  [7, 15, 12, 14],[3, 9, 4, 10]]
+def le_arquivo(arquivo):
+    linhas = open(arquivo,'r').readlines()
+    size = len(linhas)
+    tab = ([l.split() for l in linhas])
+    for linha in range(size):
+        for coluna in range(size):
+            tab[linha][coluna] = int(tab[linha][coluna])
+    return tab
 
-"""tab_teste = [[1, 2, 3, 4, 5, 6, 7, 8],
-             [9, 10, 11, 12, 13, 14, 15, 16],
-             [17, 18, 19, 20, 21, 22, 23, 24],
-             [25, 26, 27, 28, 29, 30, 31, 32],
-             [33, 34, 35, 36, 37, 46, 38, 40],
-             [41, 50, 42, 44, 0, 45, 39, 47],
-             [49, 59, 60, 51, 53, 54,63, 48],
-             [57, 58, 52, 43, 61, 62, 56, 55]]
-"""
-tab_teste = random_tab(tam_tabuleiro,tam_tabuleiro**3).get_tab()
+def cpu_time():
+    return resource.getrusage(resource.RUSAGE_SELF)[0]
+    #return time.time()
 
-s = Solver(n=tam_tabuleiro,tabini=tab_teste,heuristica=manhattan)
+def usage():
+    print "Uso: heuristica (-f arquivo|-r tamanho movimentos)"
 
-cProfile.run('s.magic()')
-#s.magic()
+def solver(heuri,tab):
+    tam_tabuleiro = len(tab[0])
+    print 'Tabuleiro inicial'
+    print Tabuleiro(tab)
+    c1 = cpu_time()
+    s = Solver(n=tam_tabuleiro,tabini=tab,heuristica=eval(heuri))
+    n_mov,sol = s.magic()
+    cf = cpu_time() - c1
+    print "Num. de movimentos, tempo"
+    print n_mov,cf
+
+if __name__ == "__main__":
+    heuri = sys.argv[1]
+    argtab = sys.argv[2]
+    if argtab == '-h':
+        usage()
+    if argtab == "-f":
+        tab = le_arquivo(sys.argv[3])
+        solver(heuri,tab)
+    elif argtab == "-r":
+        tab = random_tab(int(sys.argv[3]),int(sys.argv[4])).get_tab()
+        solver(heuri,tab)
+
