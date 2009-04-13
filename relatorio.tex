@@ -3,7 +3,8 @@
 \usepackage[brazil]{babel} 
 \usepackage[utf8]{inputenc}
 \usepackage{indentfirst} 
-\usepackage{graphicx} 
+\usepackage{graphicx}
+\usepackage{here}
 
 
 \begin{document}
@@ -26,24 +27,22 @@
 Seja uma matriz quadrada de tamanho {\it n} preenchida aletoriamente por 
 {\it $n^2 - 1$} 
 números sendo que, uma destas posições contém um espaço em
-"branco". O objetivo do jogo é, trocando o espaço em branco apenas pelas peças
+``branco''. O objetivo do jogo é, trocando o espaço em branco apenas pelas peças
 que são não-diagonalmente tangíveis, levar a matriz à uma configuração tal que
 os números dispostos estão ordenados, primeiramente pela linha e depois por
 coluna, e o último é o caracter nulo.
 
 % Por um Here nas tabelas
-\begin{table}
+\begin{table}[H]
   \begin{center}
 
     \begin{tabular}{c c c c}
-      
       \begin{tabular}{|c|c|c|}
         \hline
         9 &5 &1 \\ \hline
         4 &3 &7 \\ \hline
           &2 &8 \\ \hline
       \end{tabular}
-      
       & & &
 
       \begin{tabular}{|c|c|c|}
@@ -52,7 +51,6 @@ coluna, e o último é o caracter nulo.
         4 &5 &6 \\ \hline
         7 &8 &  \\ \hline
       \end{tabular}
-      
     \end{tabular}
 
   \end{center}
@@ -67,8 +65,7 @@ coluna, e o último é o caracter nulo.
 Para solucionar o problema computacionalmente, devemos representá-lo de forma
 que possamos manipular os dados e encontrar uma solução utilizando um raciocínio
 que simule o comportamento humano. Uma maneira para representar os dados e
-avaliar as possíveis jogadas, é utilizar a estrutura de árvore. Cada nodo da árvore contém uma configuração de tabuleiro, 
-que nada mais é que uma lista de listas.
+avaliar as possíveis jogadas, é utilizar a estrutura de árvore. Cada nodo da árvore contém uma configuração de tabuleiro, que nada mais é que uma lista de listas.
 Deste modo, partindo da posição inicial, podemos expandir todas as jogadas possíveis e fazer
 isto recursivamente até encontrar a solução ({\it busca em largura}), ou
 expandimos apenas uma das jogadas e continuamos desta forma até que o ramo
@@ -77,17 +74,19 @@ escolhemos outro nó para ser expandido ({\it busca em profundidade}).
 
 Em nenhum dos dois métodos acima levamos em consideração o jogo em questão, logo
 a busca que fazemos na árvore não é inteligente. Sabendo de antemão as regras do
-jogo e alguma maneira de encontrar a vitória mais rápido, podemos não expandimos
-nós de maneira indiscriminada o que pode conduzir a uma vitória mais rápida. A
+jogo e alguma maneira de encontrar a vitória mais rápido, podemos não
+expandir os
+nós de maneira indiscriminada, o que pode conduzir a uma vitória mais rápida. A
 estimativa do custo do caminho entre um nó e o objetivo é chamada de {\it função
   heurística}.
 
 \section{Percorrendo a árvore}
-Para percorrer a árvore de possíveis estados do jogo, escolhemos o método A* que
-leva em consideração, não somente a função heurística mas, também, a altura que
+Para percorrer a árvore de possíveis estados do jogo, escolhemos o método
+\textit{A*} que
+leva em consideração, não somente a função heurística mas também a altura que
 estamos na árvore. Dessa maneira não nos perderemos em um caminho onde todas as
 jogadas tem um peso baixo porém precisaremos de muitas, ou infinitas, para chegar
-a vitória. 
+a vitória.
 
 Neste método, dado um nó inicial, os seus filhos são avaliados seguindo uma
 função peso {\it f(x)}, $ f(x) = g(x) + h(x) $, onde $ g(x) $ é a altura do nó
@@ -106,31 +105,30 @@ As jogadas subsequentes seguem a mesma rotina, até encontrar o tabuleiro de pes
 
 \subsection{Funções heurísticas e comparações}
 Como já citado acima, o papel da função heurística é fazer com que a tomada de
-decisão na expansão dos nós nos leve a uma vitória, de uma maneira mais inteligente 
+decisão na expansão dos nós nos leve a uma vitória, de uma maneira mais inteligente
 do que apenas expandir a árvore de forma indiscriminada.
 
 A seguir, discutiremos as heurísticas usadas e faremos uma comparação entre elas
 
 \subsubsection {Distância Manhattan}
 A primeira tentativa de implementação foi usando como heurística a distância Manhattan.
-Antes de escolher um nodo para expandir (ou seja, uma jogada), primeiro calculamos a distância entre a 
-posição atual e a posição onde a peça deveria estar, para todas as peças do tabuleiro. Somamos então todas as distâncias com a altura 
-na árvore em que está o tabuleiro. Fazemos isso para todos os nodos filhos do nodo inicial. 
+Antes de escolher um nodo para expandir (ou seja, uma jogada), primeiro calculamos a distância entre a
+posição atual e a posição onde a peça deveria estar, para todas as peças do tabuleiro. Somamos então todas as distâncias com a altura
+na árvore em que está o tabuleiro. Fazemos isso para todos os nodos filhos do nodo inicial.
 Então, colocamos o nodo da árvore que contém o tabuleiro na lista ordenada de nodos, para então sim escolhermos a próxima jogada.
 %por alguma razão, essa heurística não está resolvendo problemas de 4x4. (nao sei se coloca isso)
 
-\subsubsection {Heurística da "cebola"}
-A fim de fazer o menor número de jogadas possíveis, pensamos em uma implementação que resolvesse primeiro as partes mais externas do tabuleiro. 
-Dessa forma, essas peças mais externas não precisariam ser mais movidas. Para o programa atingir um comportamento que resolvesse dessa forma, 
+\subsubsection {Heurística da "Cebola"}
+A fim de fazer o menor número de jogadas possíveis, pensamos em uma implementação que resolvesse primeiro as partes mais externas do tabuleiro.
+Dessa forma, essas peças mais externas não precisariam ser mais movidas. Para o programa atingir um comportamento que resolvesse dessa forma,
 adicionamos um elemento à heurística anterior, uma matriz multiplicadora com a seguinte configuração:
 
-\begin{table}
+\begin{table}[H]
   \begin{center}
 
     \begin{tabular}{c c c c c c c c}
-      
       \begin{tabular}{|c|c|c|c|}
-        \hline 
+        \hline
         {\it n-1} &{\it n-1} &{\it n-1} &{\it n-1} \\ \hline
         {\it n-1} &{\it n-2} &{\it n-2} &{\it n-2} \\ \hline
         {\it n-1} &{\it n-2} & ...  & ...  \\ \hline
@@ -138,7 +136,6 @@ adicionamos um elemento à heurística anterior, uma matriz multiplicadora com a
       \end{tabular}
 
       & &
-      
       \begin{tabular}{|c|c|c|c|}
         \hline
         3 &3 &3 &3 \\ \hline
@@ -156,7 +153,6 @@ adicionamos um elemento à heurística anterior, uma matriz multiplicadora com a
         12&8 &9 &2 \\ \hline
         14&4 &3 &5 \\ \hline
       \end{tabular}
-      
     \end{tabular}
 
   \end{center}
@@ -170,8 +166,9 @@ adicionamos um elemento à heurística anterior, uma matriz multiplicadora com a
 
 \end{table}
 
-Agora, para cada peça do tabuleiro, calcula-se a distância manhattan e multiplica pelo valor correspondente na matriz multiplicadora. O valor correspondente se encontra
-na posição em que a peça deveria estar, na matriz multiplicadora. Soma-se então todos esses valores com a altura do nodo na árvore.
+Agora, para cada peça do tabuleiro, calcula-se a distância manhattan
+multiplicada pelo valor correspondente na matriz multiplicadora.
+Soma-se então todos esses valores com a altura do nodo na árvore.
 
 \subsubsection {Heurística da "cebola" com soma}
 %nao sei o motivo de usar essa heuristica. foi a ideia inicial?
@@ -182,13 +179,12 @@ Tentando simular o pensamento normal do ser humano, foi feita a implementação 
 A idéia é dar prioridade a primeira linha, depois a segunda, e assim por diante.
 O algoritmo é o mesmo usada na Heurística da "cebola", com a diferença de que a matriz multiplicadora usa a seguinte configuração:
 
-\begin{table}
+\begin{table}[H]
   \begin{center}
 
     \begin{tabular}{c c c c c c c c}
-      
       \begin{tabular}{|c|c|c|c|}
-        \hline 
+        \hline
         {\it n} &{\it n} &{\it n} &{\it n} \\ \hline
         {\it n-1} &{\it n-1} &{\it n-1} &{\it n-1} \\ \hline
         {\it n-2} &{\it n-2} & ...  & ...  \\ \hline
@@ -196,7 +192,6 @@ O algoritmo é o mesmo usada na Heurística da "cebola", com a diferença de que
       \end{tabular}
 
       & &
-      
       \begin{tabular}{|c|c|c|c|}
         \hline
         4 &4 &4 &4 \\ \hline
@@ -214,7 +209,6 @@ O algoritmo é o mesmo usada na Heurística da "cebola", com a diferença de que
         12&8 &9 &2 \\ \hline
         14&4 &3 &5 \\ \hline
       \end{tabular}
-      
     \end{tabular}
 
   \end{center}
