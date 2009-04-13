@@ -1,0 +1,230 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[top=3cm,right=2.5cm,bottom=2.5cm,left=3cm]{geometry}
+\usepackage[brazil]{babel} 
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst} 
+\usepackage{graphicx} 
+
+
+\begin{document}
+
+\title{{\it n-puzzle} \\
+  Primeiro trabalho da disciplina de \\
+  Inteligência artificial}
+
+\author { André Parreira Malaguini\\
+  Diego Giovane Pasqualin\\
+  Leonardo Fedalto\\
+  Ulysses Bonfim}
+
+\date{\today}
+\maketitle
+  
+
+\section{Problema proposto}
+
+Seja uma matriz quadrada de tamanho {\it n} preenchida aletoriamente por 
+{\it $n^2 - 1$} 
+números sendo que, uma destas posições contém um espaço em
+"branco". O objetivo do jogo é, trocando o espaço em branco apenas pelas peças
+que são não-diagonalmente tangíveis, levar a matriz à uma configuração tal que
+os números dispostos estão ordenados, primeiramente pela linha e depois por
+coluna, e o último é o caracter nulo.
+
+% Por um Here nas tabelas
+\begin{table}
+  \begin{center}
+
+    \begin{tabular}{c c c c}
+      
+      \begin{tabular}{|c|c|c|}
+        \hline
+        9 &5 &1 \\ \hline
+        4 &3 &7 \\ \hline
+          &2 &8 \\ \hline
+      \end{tabular}
+      
+      & & &
+
+      \begin{tabular}{|c|c|c|}
+        \hline
+        1 &2 &3 \\ \hline
+        4 &5 &6 \\ \hline
+        7 &8 &  \\ \hline
+      \end{tabular}
+      
+    \end{tabular}
+
+  \end{center}
+
+  \caption{Instância de um problema onde {\it $n = 3$}, e a respectiva solução 
+    para os tabuleiros de tamanho {\it n}.}
+
+\end{table}
+
+
+\section{Resolução}
+Para solucionar o problema computacionalmente, devemos representá-lo de forma
+que possamos manipular os dados e encontrar uma solução utilizando um raciocínio
+que simule o comportamento humano. Uma maneira para representar os dados e
+avaliar as possíveis jogadas, é utilizar a estrutura de árvore. Cada nodo da árvore contém uma configuração de tabuleiro, 
+que nada mais é que uma lista de listas.
+Deste modo, partindo da posição inicial, podemos expandir todas as jogadas possíveis e fazer
+isto recursivamente até encontrar a solução ({\it busca em largura}), ou
+expandimos apenas uma das jogadas e continuamos desta forma até que o ramo
+escolhido nos leve a uma das soluções ou, caso esse ramo seja falho, voltamos e
+escolhemos outro nó para ser expandido ({\it busca em profundidade}).
+
+Em nenhum dos dois métodos acima levamos em consideração o jogo em questão, logo
+a busca que fazemos na árvore não é inteligente. Sabendo de antemão as regras do
+jogo e alguma maneira de encontrar a vitória mais rápido, podemos não expandimos
+nós de maneira indiscriminada o que pode conduzir a uma vitória mais rápida. A
+estimativa do custo do caminho entre um nó e o objetivo é chamada de {\it função
+  heurística}.
+
+\section{Percorrendo a árvore}
+Para percorrer a árvore de possíveis estados do jogo, escolhemos o método A* que
+leva em consideração, não somente a função heurística mas, também, a altura que
+estamos na árvore. Dessa maneira não nos perderemos em um caminho onde todas as
+jogadas tem um peso baixo porém precisaremos de muitas, ou infinitas, para chegar
+a vitória. 
+
+Neste método, dado um nó inicial, os seus filhos são avaliados seguindo uma
+função peso {\it f(x)}, $ f(x) = g(x) + h(x) $, onde $ g(x) $ é a altura do nó
+{\it x}, e $h(x)$ seu valor heurístico.
+
+
+\section{Implementação da solução}
+Partindo de uma configuração inicial qualquer, avaliamos os pesos de todas as
+jogadas possíveis, ou seja, os filhos do nodo inicial, usando alguma função heurística, e inserimos em uma lista ordenada pelos
+pesos. A partir dai, expandimos o nodo que está em primeiro na lista ordenada.
+As jogadas subsequentes seguem a mesma rotina, até encontrar o tabuleiro de peso 0, que é a solução.
+
+%Para evitar os loops de jogadas repetidas guardamos todos os tabuleiros gerados
+%em uma outra lista, assim quando um novo filho é gerado só o inserimos na lista
+%de filhos se o movimento não levar a uma configuração já alcançada.
+
+\subsection{Funções heurísticas e comparações}
+Como já citado acima, o papel da função heurística é fazer com que a tomada de
+decisão na expansão dos nós nos leve a uma vitória, de uma maneira mais inteligente 
+do que apenas expandir a árvore de forma indiscriminada.
+
+A seguir, discutiremos as heurísticas usadas e faremos uma comparação entre elas
+
+\subsubsection {Distância Manhattan}
+A primeira tentativa de implementação foi usando como heurística a distância Manhattan.
+Antes de escolher um nodo para expandir (ou seja, uma jogada), primeiro calculamos a distância entre a 
+posição atual e a posição onde a peça deveria estar, para todas as peças do tabuleiro. Somamos então todas as distâncias com a altura 
+na árvore em que está o tabuleiro. Fazemos isso para todos os nodos filhos do nodo inicial. 
+Então, colocamos o nodo da árvore que contém o tabuleiro na lista ordenada de nodos, para então sim escolhermos a próxima jogada.
+%por alguma razão, essa heurística não está resolvendo problemas de 4x4. (nao sei se coloca isso)
+
+\subsubsection {Heurística da "cebola"}
+A fim de fazer o menor número de jogadas possíveis, pensamos em uma implementação que resolvesse primeiro as partes mais externas do tabuleiro. 
+Dessa forma, essas peças mais externas não precisariam ser mais movidas. Para o programa atingir um comportamento que resolvesse dessa forma, 
+adicionamos um elemento à heurística anterior, uma matriz multiplicadora com a seguinte configuração:
+
+\begin{table}
+  \begin{center}
+
+    \begin{tabular}{c c c c c c c c}
+      
+      \begin{tabular}{|c|c|c|c|}
+        \hline 
+        {\it n-1} &{\it n-1} &{\it n-1} &{\it n-1} \\ \hline
+        {\it n-1} &{\it n-2} &{\it n-2} &{\it n-2} \\ \hline
+        {\it n-1} &{\it n-2} & ...  & ...  \\ \hline
+        {\it n-1} &{\it n-2} & ...  & 0 \\ \hline
+      \end{tabular}
+
+      & &
+      
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        3 &3 &3 &3 \\ \hline
+        3 &2 &2 &2 \\ \hline
+        3 &2 &1 &1 \\ \hline
+        3 &2 &1 &0 \\ \hline
+      \end{tabular}
+
+      & &
+
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        7 &1 &11&10\\ \hline
+        15&13&  &6 \\ \hline
+        12&8 &9 &2 \\ \hline
+        14&4 &3 &5 \\ \hline
+      \end{tabular}
+      
+    \end{tabular}
+
+  \end{center}
+
+  \caption{Matriz multiplicadora para {\it n} qualquer, uma instância dela para
+    {\it $n=4$} e um exemplo de tabuleiro. Assim, para obtermos o valor
+    heurístico do número 12, por exemplo, calculamos a distância até sua posição
+    correta, valor 3, e multiplicamos pelo valor contido na 12ª posição (linha 
+    3, coluna 3) da matriz multiplicadora. O resultado neste
+    exemplo é $h(12) = 3 * 1 = 3$.}
+
+\end{table}
+
+Agora, para cada peça do tabuleiro, calcula-se a distância manhattan e multiplica pelo valor correspondente na matriz multiplicadora. O valor correspondente se encontra
+na posição em que a peça deveria estar, na matriz multiplicadora. Soma-se então todos esses valores com a altura do nodo na árvore.
+
+\subsubsection {Heurística da "cebola" com soma}
+%nao sei o motivo de usar essa heuristica. foi a ideia inicial?
+Essa heurística funciona da mesma forma que a Herística citada anteriormente, com a diferença que em vez de multiplicar a distância manhattan com o valor na matriz multiplicadora, faz-se a soma.
+
+\subsubsection {Heurística Layers}
+Tentando simular o pensamento normal do ser humano, foi feita a implementação com esta heurística.
+A idéia é dar prioridade a primeira linha, depois a segunda, e assim por diante.
+O algoritmo é o mesmo usada na Heurística da "cebola", com a diferença de que a matriz multiplicadora usa a seguinte configuração:
+
+\begin{table}
+  \begin{center}
+
+    \begin{tabular}{c c c c c c c c}
+      
+      \begin{tabular}{|c|c|c|c|}
+        \hline 
+        {\it n} &{\it n} &{\it n} &{\it n} \\ \hline
+        {\it n-1} &{\it n-1} &{\it n-1} &{\it n-1} \\ \hline
+        {\it n-2} &{\it n-2} & ...  & ...  \\ \hline
+        {\it 1} &{\it 1} & ...  & 0 \\ \hline
+      \end{tabular}
+
+      & &
+      
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        4 &4 &4 &4 \\ \hline
+        3 &3 &3 &3 \\ \hline
+        2 &2 &2 &2 \\ \hline
+        1 &1 &1 &0 \\ \hline
+      \end{tabular}
+
+      & &
+
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        7 &1 &11&10\\ \hline
+        15&13&  &6 \\ \hline
+        12&8 &9 &2 \\ \hline
+        14&4 &3 &5 \\ \hline
+      \end{tabular}
+      
+    \end{tabular}
+
+  \end{center}
+
+  \caption{Matriz multiplicadora para {\it n} qualquer, uma instância dela para
+    {\it $n=4$} e um exemplo de tabuleiro. Assim, para obtermos o valor
+    heurístico do número 12, por exemplo, calculamos a distância até sua posição
+    correta, valor 3, e multiplicamos pelo valor contido na 12ª posição (linha 
+    3, coluna 3) da matriz multiplicadora. O resultado neste
+    exemplo é $h(12) = 3 * 2 = 6$.}
+
+\end{table}
+\end{document}
