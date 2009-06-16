@@ -90,8 +90,10 @@ class Solver (object):
             jogada = {'ondetava': novo_tab.zero_pos,
                       'ondefoi' : nodo.tab.zero_pos }
 
-            incaltura = 1
-            #incaltura = nodo.tab.n/2
+            if self.heuristica.__name__ == "cebola":
+                incaltura = nodo.tab.n/2
+            else:
+                incaltura = 1
 
             delta = self.heuristica.calcula(novo_tab, nodo.peso, jogada)
             novo_nodo = Nodo(novo_tab, nodo, (nodo.peso + delta)+incaltura,
@@ -105,6 +107,7 @@ class Solver (object):
         while self.heuristica.terminou(nodo):
             self.gera_filhos(nodo)
             nodo = self.prox_nodo()
+        print self.print_solucao(nodo)
         return self.get_solucao(nodo)
 
     def get_solucao(self,nodo):

@@ -31,6 +31,7 @@ class cebola(Heuristica):
     """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
     tabuleiro após uma jogada.
     n -> tamanho do tabuleiro (assume-se que seja quadrático) """
+    __name__ = 'cebola'
     def __init__(self, n):
         Heuristica.__init__(self, n)
         self.matriz_multi = self._gera_matriz_multi()
@@ -138,6 +139,7 @@ class layers (cebola):
         return tab_multi
 
 class manhattan(Heuristica):
+    __name__ = "manhattan"
     """ Calcula o peso de um tabuleiro, ou a alteracao de peso em um
     tabuleiro após uma jogada.
     n -> tamanho do tabuleiro (assume-se que seja quadrático) """
