@@ -6,7 +6,7 @@ from tabuleiro import Tabuleiro,random_tab
 import cProfile, resource, sys, time
 
 def le_arquivo(arquivo):
-    linhas = open(arquivo,'r').readlines()
+    linhas = open(arquivo,'r').readlines()[1:]
     size = len(linhas)
     tab = ([l.split() for l in linhas])
     for linha in range(size):
